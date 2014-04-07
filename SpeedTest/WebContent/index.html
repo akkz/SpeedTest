@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>在线测速 BY：AKKZ</title>
+<base href="http://localhost:80/">
+<style type="text/css">
+div {
+	margin:1em auto;
+	font-family:"微软雅黑", "黑体";
+	font-size:24px;
+}
+
+input,select,form {
+	font-family:"微软雅黑", "黑体";
+	font-size:18px;
+}
+
+#contain{
+	width:960px;
+	margin:0px auto;
+}
+</style>
+
+<script type="text/jscript" src="Javascript/jQuery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(start);
+
+function start()
+{
+	$("#testBtn").click(test);
+	
+	setInterval(getState,1000);
+}
+
+function test()
+{
+	var timeIn = new Date();
+
+	$.ajax({
+		type: 'GET',        
+		url: "/dataSend.do",
+		data: "fileSize="+$("#filekind").val(),
+		cache: false,
+		success: function(){result(timeIn)}
+	});
+}
+
+function result(timeIn)
+{
+	var overtime = new Date() - timeIn;
+	
+	if(overtime == 0)
+		overtime = 1; 
+	
+	alert(Math.round(parseInt($("#filekind").val())*1000/overtime));
+}
+
+function getState()
+{
+	jQuery.ajax({
+		type: 'GET',        
+		url: "/state.do",
+		cache: false,
+		success: function(data){
+			//alert(data.value);
+			$("#state").text(data);
+		}
+	});
+}
+
+getState()
+</script>
+
+</head>
+<body>
+    <div id="contain">
+    	<div id="tips">
+        	你的ip<br>
+        </div>
+        
+        <div id="inf">
+        </div>
+    	<div id="buttons">
+        	选择测速文件大小
+            <select id="filekind">
+                <option value="50">50KB</option>
+                <option value="100">100KB</option>
+                <option value="500" selected>500KB</option>
+                <option value="1000">1024KB</option>
+            </select>
+            <br>
+            <div><span id="state"></span>%</div>
+            <input id="testBtn" type="button" value="测速" onClick="Tstart()">
+        </div>
+    
+    </div>
+    
+
+</body>
+</html>

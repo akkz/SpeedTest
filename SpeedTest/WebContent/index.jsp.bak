@@ -1,0 +1,182 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>在线测速 BY：AKKZ</title>
+<style type="text/css">
+div {
+	margin:1em auto;
+	font-family:"微软雅黑", "黑体";
+	font-size:24px;
+}
+
+input,select,form {
+	font-family:"微软雅黑", "黑体";
+	font-size:18px;
+}
+
+#contain{
+	width:960px;
+	margin:0px auto;
+}
+</style>
+
+</head>
+<body>
+    <div id="contain">
+    	<div id="tips">
+        	你的ip <%= request.getRemoteAddr() %><br>
+        </div>
+        
+        <div id="inf">
+        </div>
+    	<div id="buttons">
+        	选择测速文件大小
+            <select id="filekind">
+                <option value="50">50KB</option>
+                <option value="100">100KB</option>
+                <option value="500" selected>500KB</option>
+                <option value="1000">1024KB</option>
+            </select>
+            <br>
+            <input type="button" value="测速" onClick="Tstart()">
+        </div>
+    
+    <div id="test"></div>
+    <form id="result" method="post" action="/speedtest/updateSpeed.action">
+    	<input id="fsize" name="fsize" type="hidden" value="">
+        <input id="fspeed" name="fspeed" type="hidden" value="">
+    	提交人：<input id="operator" name="operator" type="text" size="6" value="">
+    	<select name="building">
+                <option value="1">1号楼</option>
+               	<option value="2">2号楼</option>
+               	<option value="3">3号楼</option>
+               	<option value="4">4号楼</option>
+               	<option value="5">5号楼</option>
+               	<option value="6">6号楼</option>
+               	<option value="7">7号楼</option>
+               	<option value="8">8号楼</option>
+               	<option value="9">9号楼</option>
+               	<option value="10">10号楼</option>
+               	<option value="11">11号楼</option>
+               	<option value="12">12号楼</option>
+               	<option value="13">13号楼</option>
+               	<option value="14">14号楼</option>
+               	<option value="0">研究生公寓</option>
+        </select>
+        <input type="button" value="提交" onClick="doSubmit()">
+    </form>
+    
+    </div>
+    
+<script type="text/javascript">
+var starttime;
+var overtime;
+var fileSize;
+var speed = new Array(4);
+var avgSpeed = 0;
+
+var loop;
+var msg;
+
+function Tstart()
+{
+	fileSize = document.getElementById("filekind").value;
+	
+	msg = "测试文件大小" + fileSize + "KB<br>";
+	document.getElementById("inf").innerHTML = msg;
+	
+	loop = 0;
+	
+	loopDo();
+}
+
+function loopDo()
+{
+	loop++;
+	
+	if(loop > 3)
+	{
+		Tend();
+		return;
+	}
+		
+	starttime = new Date();
+		
+	switch(fileSize)
+	{
+		case "50":download50();break;
+		case "100":download100();break;
+		case "500":download500();break;
+		case "1000":download1000();
+	}
+}
+
+function figure()
+{
+	overtime = new Date() - starttime;
+	
+	if(overtime == 0)
+		overtime = 1; 
+	
+	speed[loop] = Math.round((fileSize*1000)/overtime); 
+
+	msg += "第" + loop + "测试：" + speed[loop] + "KB/S<br>"
+	document.getElementById("inf").innerHTML = msg;
+	
+	loopDo();
+}
+
+function Tend()
+{
+	avgSpeed = Math.round((speed[1] + speed[2] + speed[3]) / 3);
+	
+	msg += "---------------------<br>平均值:" + avgSpeed + "KB/S";
+	
+	document.getElementById("inf").innerHTML = msg;
+}
+
+function doSubmit()
+{
+	if(document.getElementById("operator").value == "")
+	{
+		alert("请输入提交人姓名");
+		return;
+	}
+	
+	if(avgSpeed == 0)
+	{
+		alert("请测速后提交");
+		return;
+	}
+	
+	document.getElementById("fsize").value = fileSize;
+	document.getElementById("fspeed").value = avgSpeed;
+	
+	document.getElementById("result").submit();
+}
+
+function download50()
+{
+	document.getElementById("test").innerHTML = "<img src=\"http://download.akkz.net/test/50K.png?id=" + parseInt(Math.random()*1000+1)  + "\" width=0 height=0 onload=\"figure();\"> ";
+}
+
+function download100()
+{
+	document.getElementById("test").innerHTML = "<img src=\"http://download.akkz.net/test/100K.png?id=" + parseInt(Math.random()*1000+1)  + "\" width=0 height=0 onload=\"figure();\"> ";
+}
+
+function download500()
+{
+	document.getElementById("test").innerHTML = "<img src=\"http://download.akkz.net/test/500K.png?id=" + parseInt(Math.random()*1000+1)  + "\" width=0 height=0 onload=\"figure();\"> ";
+}
+
+function download1000()
+{
+	document.getElementById("test").innerHTML = "<img src=\"http://download.akkz.net/test/1M.png?id=" + parseInt(Math.random()*1000+1)  + "\" width=0 height=0 onload=\"figure();\"> ";
+}
+</script>
+</body>
+</html>
