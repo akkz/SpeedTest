@@ -37,6 +37,8 @@ public class PressTest extends HttpServlet
 		for(int i=size; i>0; i-=1024)
 		{
 			ps.print(oneKb);
+			
+			tt.sendData();
 		}
 		tt.end();
 		
