@@ -68,7 +68,7 @@ public class PressTest extends HttpServlet
 					state += "[" + second++ + "," + send*1000/(e-s) + "],";
 					send = 0;
 					s = e;
-					System.out.println(state);
+					
 					p.setState("[[" + state.substring(0, state.length()-1) + "]]");
 				}
 			}
