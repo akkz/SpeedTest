@@ -1,11 +1,10 @@
 image: daocloud.io/library/ubuntu:latest
 
-services:
-
-env:
-
 install:
+	- echo "install"
 
 before_script:
+	- echo "before_script"
 
 script:
+	- echo "script"
