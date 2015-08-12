@@ -1,1 +1,4 @@
 image: daocloud.io/library/ubuntu:latest
+
+script:
+  - echo "auto build"
