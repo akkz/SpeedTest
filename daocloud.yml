@@ -1,4 +1,4 @@
-image: daocloud.io/library/ubuntu:latest
+image: daocloud/ci-java:oraclejdk9
 
 script:
   - echo "auto build"
