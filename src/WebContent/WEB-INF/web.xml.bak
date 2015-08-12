@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    id="WebApp_ID"
+    version="3.0"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" >
+	<display-name>AhauJoin </display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<context-param>
+		<param-name>username</param-name>
+		<param-value>akkz</param-value>
+	</context-param>
+	<context-param>
+		<param-name>password</param-name>
+		<param-value>abei</param-value>
+	</context-param>
+	<context-param>
+		<param-name>url</param-name>
+		<param-value>jdbc:mysql://localhost:3306/netcenter?useUnicode=true&amp;characterEncoding=UTF8</param-value>
+	</context-param>
+	<listener>
+    <listener-class>akkz.ServerInitializer</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>update</servlet-name>
+    <servlet-class>akkz.Update</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>update</servlet-name>
+    <url-pattern>/updateSpeed.action</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>dataSend</servlet-name>
+    <servlet-class>akkz.DataSend</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dataSend</servlet-name>
+    <url-pattern>/dataSend.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>State</servlet-name>
+    <servlet-class>akkz.State</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>State</servlet-name>
+    <url-pattern>/state.do</url-pattern>
+  </servlet-mapping>
+</web-app>
